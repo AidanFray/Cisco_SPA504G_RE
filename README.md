@@ -1,4 +1,4 @@
-# Cisco SP504G RE
+# Cisco SPA504G RE
 
 # Resources
 
