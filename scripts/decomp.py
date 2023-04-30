@@ -44,6 +44,6 @@ if __name__ == '__main__':
                 f.write(sector_data)
             else:
                 sector_data_decomp = zlib.decompress(sector_data, 0xf)
-                f.write(sector_data)
+                f.write(sector_data_decomp)
 
         offset += 0x40
