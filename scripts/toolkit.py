@@ -35,6 +35,8 @@ if __name__ == '__main__':
 
         print(f"Firmware has {total_sectors} sectors")
 
+        all_data = b""
+
         offset = 0x40
         for sector in range(total_sectors - 1):
 
@@ -59,9 +61,17 @@ if __name__ == '__main__':
                 with open(f"./{args.out}/sector_{hex(sector_id)}.bin", "wb") as f:
                     if sector_flag & 0x1 == 0x1:
                         # Sector is not compressed
-                        f.write(sector_data)
+                        write_data = sector_data
                     else:
                         sector_data_decomp = zlib.decompress(sector_data, 0xf)
-                        f.write(sector_data_decomp)
+                        write_data = sector_data_decomp
+
+                    all_data += write_data
+                    f.write(write_data)
 
             offset += 0x40
+
+        # Writes all the data to a single file with a guaranteed order
+        if all_data != b"":
+            with open(f"./{args.out}/all.bin", "wb") as f:
+                f.write(all_data)
